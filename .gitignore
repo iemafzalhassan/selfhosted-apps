@@ -10,9 +10,10 @@ pihole/etc-dnsmasq.d/*
 traefik/certs/*
 !traefik/certs/.gitkeep
 
-# Environment files with credentials
+# Environment files with credentials (but allow .env.example)
 *.env
 .env.*
+!*.env.example
 n8n/.env
 **/.env.local
 **/.env.*.local
