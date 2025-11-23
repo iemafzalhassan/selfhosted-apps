@@ -1,0 +1,97 @@
+http:
+  routers:
+    # Placeholder for future dynamic configs
+    pass:
+      rule: "Host(`localhost`)"
+      service: noop@internal
+    
+    # Manual service routes (workaround for Docker provider issues)
+    grafana:
+      rule: "Host(`grafana.lan`)"
+      service: grafana
+      entryPoints:
+        - websecure
+      tls: {}
+    
+    n8n:
+      rule: "Host(`n8n.lan`)"
+      service: n8n
+      entryPoints:
+        - websecure
+      tls: {}
+    
+    sterling:
+      rule: "Host(`sterling.lan`)"
+      service: sterling
+      entryPoints:
+        - websecure
+      tls: {}
+    
+    networking:
+      rule: "Host(`networking.lan`)"
+      service: networking
+      entryPoints:
+        - websecure
+      tls: {}
+    
+    pihole:
+      rule: "Host(`pihole.lan`)"
+      service: pihole
+      entryPoints:
+        - websecure
+      tls: {}
+    
+    keycloak:
+      rule: "Host(`keycloak.lan`)"
+      service: keycloak
+      entryPoints:
+        - websecure
+      tls: {}
+      middlewares:
+        - keycloak-headers
+  
+  services:
+    grafana:
+      loadBalancer:
+        servers:
+          - url: "http://172.19.0.3:3000"
+    
+    n8n:
+      loadBalancer:
+        servers:
+          - url: "http://172.19.0.6:5678"
+    
+    sterling:
+      loadBalancer:
+        servers:
+          - url: "http://172.19.0.8:8080"
+    
+    networking:
+      loadBalancer:
+        servers:
+          - url: "http://172.19.0.9:3000"
+    
+    pihole:
+      loadBalancer:
+        servers:
+          - url: "http://172.19.0.5:80"
+    
+    keycloak:
+      loadBalancer:
+        servers:
+          - url: "http://172.24.0.3:8080"
+  
+  middlewares:
+    keycloak-headers:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
+          X-Forwarded-Host: "keycloak.lan"
+
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /certs/cert.pem
+        keyFile: /certs/key.pem
+

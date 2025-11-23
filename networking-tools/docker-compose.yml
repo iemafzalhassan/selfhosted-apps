@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    image: lissy93/networking-toolbox:latest
+    container_name: networking-tools
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.networking.entrypoints=websecure"
+      - "traefik.http.routers.networking.rule=Host(`networking.lan`)"
+      - "traefik.http.routers.networking.tls=true"
+      - "traefik.http.services.networking.loadbalancer.server.port=3000"
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  stirling-pdf:
+    image: frooodle/s-pdf:latest
+    container_name: stirling-pdf
+    restart: unless-stopped
+    # Optional volumes for OCR languages and configs (commented out - can be enabled if needed)
+    # volumes:
+    #   - ./trainingData:/usr/share/tesseract-ocr/4.00/tessdata #Required for extra OCR languages
+    #   - ./extraConfigs:/configs
+    #   - ./customFiles:/customFiles/
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sterling.entrypoints=websecure"
+      - "traefik.http.routers.sterling.rule=Host(`sterling.lan`)"
+      - "traefik.http.routers.sterling.tls=true"
+      - "traefik.http.services.sterling.loadbalancer.server.port=8080"
+
+networks:
+  proxy:
+    external: true
