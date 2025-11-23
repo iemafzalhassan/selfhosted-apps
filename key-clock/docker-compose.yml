@@ -25,8 +25,8 @@ services:
     restart: unless-stopped
     command:
       - start
-      - --optimized
       - --hostname-strict=false
+      - --hostname-url=https://keycloak.lan
       - --proxy-headers=xforwarded
     env_file:
       - .env
@@ -41,7 +41,7 @@ services:
       # Admin credentials (change these!)
       KC_HOSTNAME: ${KC_HOSTNAME:-keycloak.lan}
       KC_HOSTNAME_STRICT: ${KC_HOSTNAME_STRICT:-false}
-      KC_HOSTNAME_STRICT_HTTPS: ${KC_HOSTNAME_STRICT_HTTPS:-false}
+      KC_HOSTNAME_URL: ${KC_HOSTNAME_URL:-https://keycloak.lan}
       KC_HTTP_ENABLED: ${KC_HTTP_ENABLED:-true}
       KC_PROXY: ${KC_PROXY:-edge}
       KC_PROXY_ADDRESS_FORWARDING: ${KC_PROXY_ADDRESS_FORWARDING:-true}
