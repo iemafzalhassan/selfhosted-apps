@@ -1,5 +1,46 @@
-docs
+# Documentation
+docs/
+
+# Pi-hole configuration and data (keep local only)
 pihole/etc-pihole/*
 pihole/etc-dnsmasq.d/*
+!pihole/etc-pihole/.gitkeep
+
+# SSL certificates (keep local only)
 traefik/certs/*
+!traefik/certs/.gitkeep
+
+# Environment files with credentials
+*.env
+.env.*
+n8n/.env
+**/.env.local
+**/.env.*.local
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Credentials and secrets
+**/secrets/
+**/credentials/
+**/*secret*
+**/*password*
+**/*key*
+**/*token*
+
+# IDE and editor files
+.cursorignore
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
 
