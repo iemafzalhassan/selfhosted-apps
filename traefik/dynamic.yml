@@ -49,6 +49,22 @@ http:
       tls: {}
       middlewares:
         - keycloak-headers
+    
+    jenkins:
+      rule: "Host(`jenkins.lan`)"
+      service: jenkins
+      entryPoints:
+        - websecure
+      tls: {}
+    
+    portainer:
+      rule: "Host(`portainer.lan`)"
+      service: portainer
+      entryPoints:
+        - websecure
+      tls: {}
+      middlewares:
+        - portainer-headers
   
   services:
     grafana:
@@ -80,6 +96,16 @@ http:
       loadBalancer:
         servers:
           - url: "http://172.24.0.3:8080"
+    
+    jenkins:
+      loadBalancer:
+        servers:
+          - url: "http://172.19.0.7:8080"
+    
+    portainer:
+      loadBalancer:
+        servers:
+          - url: "http://172.19.0.10:9000"
   
   middlewares:
     keycloak-headers:
@@ -87,6 +113,11 @@ http:
         customRequestHeaders:
           X-Forwarded-Proto: "https"
           X-Forwarded-Host: "keycloak.lan"
+    
+    portainer-headers:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
 
 tls:
   stores:
