@@ -3,10 +3,12 @@ services:
     image: postgres:14
     container_name: keycloak-db
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: keycloak_pass
-      POSTGRES_DB: keycloak
+      POSTGRES_USER: ${POSTGRES_USER:-keycloak}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-keycloak_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-keycloak}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -26,28 +28,30 @@ services:
       - --optimized
       - --hostname-strict=false
       - --proxy-headers=xforwarded
+    env_file:
+      - .env
     environment:
       # Database configuration
-      KC_DB: postgres
-      KC_DB_URL_HOST: postgres
-      KC_DB_URL_DATABASE: keycloak
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: keycloak_pass
+      KC_DB: ${KC_DB:-postgres}
+      KC_DB_URL_HOST: ${KC_DB_URL_HOST:-postgres}
+      KC_DB_URL_DATABASE: ${KC_DB_URL_DATABASE:-keycloak}
+      KC_DB_USERNAME: ${KC_DB_USERNAME:-keycloak}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD:-keycloak_pass}
       
       # Admin credentials (change these!)
-      KC_HOSTNAME: keycloak.lan
-      KC_HOSTNAME_STRICT: false
-      KC_HOSTNAME_STRICT_HTTPS: false
-      KC_HTTP_ENABLED: true
-      KC_PROXY: edge
-      KC_PROXY_ADDRESS_FORWARDING: true
+      KC_HOSTNAME: ${KC_HOSTNAME:-keycloak.lan}
+      KC_HOSTNAME_STRICT: ${KC_HOSTNAME_STRICT:-false}
+      KC_HOSTNAME_STRICT_HTTPS: ${KC_HOSTNAME_STRICT_HTTPS:-false}
+      KC_HTTP_ENABLED: ${KC_HTTP_ENABLED:-true}
+      KC_PROXY: ${KC_PROXY:-edge}
+      KC_PROXY_ADDRESS_FORWARDING: ${KC_PROXY_ADDRESS_FORWARDING:-true}
       
       # Initial admin user (change password after first login!)
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN:-admin}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
       
       # Java options for performance
-      JAVA_OPTS_APPEND: "-Xms512m -Xmx1024m"
+      JAVA_OPTS_APPEND: ${JAVA_OPTS_APPEND:--Xms512m -Xmx1024m}
     depends_on:
       postgres:
         condition: service_healthy

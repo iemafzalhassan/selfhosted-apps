@@ -2,10 +2,12 @@ services:
   postgres:
     image: postgres:14
     restart: always
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: n8n
-      POSTGRES_PASSWORD: n8n_pass
-      POSTGRES_DB: n8n_db
+      POSTGRES_USER: ${POSTGRES_USER:-n8n}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-n8n_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-n8n_db}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -14,19 +16,21 @@ services:
   n8n:
     image: n8nio/n8n:latest
     restart: always
+    env_file:
+      - .env
     environment:
       - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_HOST=postgres
-      - DB_POSTGRESDB_PORT=5432
-      - DB_POSTGRESDB_DATABASE=n8n_db
-      - DB_POSTGRESDB_USER=n8n
-      - DB_POSTGRESDB_PASSWORD=n8n_pass
-      - N8N_PORT=5678
-      - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=iemafzalhassan
-      - N8N_BASIC_AUTH_PASSWORD=v1p3r#9900
-      - N8N_HOST=n8n.lan
-      - N8N_PROTOCOL=https
+      - DB_POSTGRESDB_HOST=${DB_POSTGRESDB_HOST:-postgres}
+      - DB_POSTGRESDB_PORT=${DB_POSTGRESDB_PORT:-5432}
+      - DB_POSTGRESDB_DATABASE=${DB_POSTGRESDB_DATABASE:-n8n_db}
+      - DB_POSTGRESDB_USER=${DB_POSTGRESDB_USER:-n8n}
+      - DB_POSTGRESDB_PASSWORD=${DB_POSTGRESDB_PASSWORD:-n8n_pass}
+      - N8N_PORT=${N8N_PORT:-5678}
+      - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE:-true}
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER:-admin}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
+      - N8N_HOST=${N8N_HOST:-n8n.lan}
+      - N8N_PROTOCOL=${N8N_PROTOCOL:-https}
     volumes:
       - n8n_data:/home/node/.n8n
       - ./local-files:/files
