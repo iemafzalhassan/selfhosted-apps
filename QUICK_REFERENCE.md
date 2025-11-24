@@ -99,15 +99,20 @@ docker network inspect proxy
 
 # Test DNS resolution
 dig @192.168.1.7 grafana.lan
+```
 
-# Flush DNS cache (macOS)
+## Flush DNS cache (macOS)
+
+```zsh
 sudo dscacheutil -flushcache
 sudo killall -HUP mDNSResponder
+```
 
 # Check Traefik routes
 curl -k https://traefik.lan/api/http/routers
 
 # Restart Pi-hole DNS
+```zsh
 docker exec pihole pihole restartdns
 ```
 

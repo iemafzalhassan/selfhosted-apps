@@ -1,0 +1,74 @@
+{
+  "distSpecVersion": "1.1.0",
+  "http": {
+    "address": "0.0.0.0",
+    "port": "5000",
+    "realm": "zot",
+    "auth": {
+      "htpasswd": {
+        "path": "/etc/zot/users.htpasswd"
+      },
+      "failDelay": 5
+    },
+    "accessControl": {
+      "repositories": {
+        "**": {
+          "policies": [
+            {
+              "users": [
+                "admin"
+              ],
+              "actions": [
+                "read",
+                "create",
+                "update",
+                "delete"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "storage": {
+    "rootDirectory": "/var/lib/zot",
+    "commit": true,
+    "dedupe": true,
+    "gc": true,
+    "gcDelay": "1h",
+    "gcInterval": "24h"
+  },
+  "log": {
+    "level": "info",
+    "output": "/var/lib/zot/zot.log",
+    "audit": "/var/lib/zot/audit.log"
+  },
+  "extensions": {
+    "search": {
+      "enable": true,
+      "cve": {
+        "updateInterval": "2h"
+      }
+    },
+    "scrub": {
+      "enable": true,
+      "interval": "24h"
+    },
+    "metrics": {
+      "enable": true,
+      "prometheus": {
+        "path": "/metrics"
+      }
+    },
+    "ui": {
+      "enable": true
+    },
+    "lint": {
+      "enable": false
+    },
+    "trust": {
+      "enable": false
+    }
+  }
+}
+

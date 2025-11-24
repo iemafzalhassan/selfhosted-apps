@@ -44,4 +44,5 @@ n8n/.env
 # OS files
 .DS_Store
 Thumbs.db
-
+scripts/*
+*all.sh
